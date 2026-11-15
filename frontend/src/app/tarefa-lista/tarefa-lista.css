@@ -1,0 +1,13 @@
+.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; font-family: sans-serif; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.6rem; border-bottom: 1px solid #ddd; text-align: left; }
+th { background: #f3f3f3; }
+tr.concluida td { opacity: 0.55; text-decoration: line-through; }
+button { margin-right: 0.4rem; padding: 0.3rem 0.7rem; cursor: pointer; }
+button.perigo { background: #d9534f; color: #fff; border: none; border-radius: 4px; }
+button:disabled { cursor: not-allowed; opacity: 0.5; }
+.badge { padding: 0.15rem 0.5rem; border-radius: 10px; color: #fff; font-size: 0.85rem; }
+.badge.alta { background: #d9534f; }
+.badge.media { background: #f0ad4e; }
+.badge.baixa { background: #5cb85c; }
+.erro { background: #fdecea; color: #b71c1c; padding: 0.7rem; border-radius: 4px; }

@@ -1,0 +1,41 @@
+<main class="container">
+  <h1>Diário de Estudos</h1>
+
+  @if (erro()) {
+    <p class="erro">{{ erro() }}</p>
+  }
+
+  @if (tarefas().length === 0 && !erro()) {
+    <p>Nenhuma tarefa cadastrada.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Matéria</th>
+          <th>Entrega</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of tarefas(); track t.id) {
+          <tr [class.concluida]="t.status === 'CONCLUIDA'">
+            <td>{{ t.titulo }}</td>
+            <td>{{ t.materia }}</td>
+            <td>{{ t.dataEntrega | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="badge" [class]="t.prioridade?.toLowerCase()">{{ t.prioridade }}</span>
+            </td>
+            <td>{{ t.status }}</td>
+            <td>
+              <button (click)="concluir(t)" [disabled]="t.status === 'CONCLUIDA'">Concluir</button>
+              <button class="perigo" (click)="excluir(t)">Excluir</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</main>

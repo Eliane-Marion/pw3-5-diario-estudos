@@ -2,10 +2,12 @@ package br.com.etec.SalgadoSergio.diario_estudo.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.etec.SalgadoSergio.diario_estudo.entity.Tarefa;
 import br.com.etec.SalgadoSergio.diario_estudo.service.TarefaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tarefas")
@@ -40,12 +43,12 @@ public class TarefaController {
     }
 
     @PostMapping
-    public Tarefa cadastrar(@RequestBody Tarefa tarefa) {
-        return service.salvar(tarefa);
+    public ResponseEntity<Tarefa> cadastrar(@Valid @RequestBody Tarefa tarefa) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(tarefa));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tarefa> atualizar(@PathVariable Long id, @RequestBody Tarefa tarefa) {
+    public ResponseEntity<Tarefa> atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa tarefa) {
         try {
             return ResponseEntity.ok(service.atualizar(id, tarefa));
         } catch (RuntimeException e) {
@@ -63,7 +66,7 @@ public class TarefaController {
         }
     }
 
-    @PutMapping("/{id}/concluir")
+    @PatchMapping("/{id}/concluir")
     public ResponseEntity<Tarefa> concluir(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.concluir(id));

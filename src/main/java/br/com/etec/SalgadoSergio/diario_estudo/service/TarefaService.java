@@ -31,6 +31,9 @@ public class TarefaService {
 
     @Transactional
     public Tarefa salvar(Tarefa tarefa) {
+        if (tarefa.getStatus() == null || tarefa.getStatus().isBlank()) {
+            tarefa.setStatus("PENDENTE");
+        }
         calcularPrioridade(tarefa);
         return repository.save(tarefa);
     }

@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,12 +26,15 @@ public class Tarefa {
     @Column(name = "ID_TAREFA")
     private Long id;
 
+    @NotBlank(message = "O título é obrigatório")
     @Column(name = "TX_TITULO")
     private String titulo;
 
+    @NotBlank(message = "A matéria é obrigatória")
     @Column(name = "TX_MATERIA")
     private String materia;
 
+    @NotNull(message = "A data de entrega é obrigatória")
     @Column(name = "DT_ENTREGA")
     private LocalDate dataEntrega;
 
@@ -38,8 +43,5 @@ public class Tarefa {
 
     @Column(name = "TP_PRIORIDADE")
     private String prioridade;
-
-    @Column(name = "DT_EXCLUSAO")
-    private LocalDate dtExclusao;
 
 }

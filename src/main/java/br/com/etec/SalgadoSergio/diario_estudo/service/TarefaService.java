@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.etec.SalgadoSergio.diario_estudo.entity.Tarefa;
+import br.com.etec.SalgadoSergio.diario_estudo.exception.RegraNegocioException;
+import br.com.etec.SalgadoSergio.diario_estudo.exception.TarefaNaoEncontradaException;
 import br.com.etec.SalgadoSergio.diario_estudo.repository.TarefaRepository;
 
 @Service
@@ -41,11 +43,13 @@ public class TarefaService {
     @Transactional
     public Tarefa atualizar(Long id, Tarefa tarefa) {
         Tarefa existente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com id: " + id));
+                .orElseThrow(() -> new TarefaNaoEncontradaException(id));
         existente.setTitulo(tarefa.getTitulo());
         existente.setMateria(tarefa.getMateria());
         existente.setDataEntrega(tarefa.getDataEntrega());
-        existente.setStatus(tarefa.getStatus());
+        if (tarefa.getStatus() != null && !tarefa.getStatus().isBlank()) {
+            existente.setStatus(tarefa.getStatus());
+        }
         calcularPrioridade(existente);
         return repository.save(existente);
     }
@@ -53,7 +57,7 @@ public class TarefaService {
     @Transactional
     public void excluir(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Tarefa não encontrada com id: " + id);
+            throw new TarefaNaoEncontradaException(id);
         }
         repository.deleteById(id);
     }
@@ -61,7 +65,10 @@ public class TarefaService {
     @Transactional
     public Tarefa concluir(Long id) {
         Tarefa tarefa = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com id: " + id));
+                .orElseThrow(() -> new TarefaNaoEncontradaException(id));
+        if ("CONCLUIDA".equals(tarefa.getStatus())) {
+            throw new RegraNegocioException("A tarefa já está concluída.");
+        }
         tarefa.setStatus("CONCLUIDA");
         return repository.save(tarefa);
     }

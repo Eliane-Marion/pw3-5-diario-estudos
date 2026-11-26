@@ -31,8 +31,8 @@ public class TarefaController {
     }
 
     @GetMapping
-    public List<Tarefa> listar() {
-        return service.listarTodas();
+    public ResponseEntity<List<Tarefa>> listar() {
+        return ResponseEntity.ok(service.listarTodas());
     }
 
     @GetMapping("/{id}")
@@ -49,29 +49,17 @@ public class TarefaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Tarefa> atualizar(@PathVariable Long id, @Valid @RequestBody Tarefa tarefa) {
-        try {
-            return ResponseEntity.ok(service.atualizar(id, tarefa));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.atualizar(id, tarefa));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        try {
-            service.excluir(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/concluir")
     public ResponseEntity<Tarefa> concluir(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(service.concluir(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.concluir(id));
     }
 }

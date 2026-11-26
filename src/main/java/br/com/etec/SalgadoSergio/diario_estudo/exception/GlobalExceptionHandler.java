@@ -3,6 +3,7 @@ package br.com.etec.SalgadoSergio.diario_estudo.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,5 +18,19 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors()
                 .forEach(erro -> erros.put(erro.getField(), erro.getDefaultMessage()));
         return ResponseEntity.badRequest().body(erros);
+    }
+
+    @ExceptionHandler(TarefaNaoEncontradaException.class)
+    public ResponseEntity<Map<String, String>> tratarNaoEncontrada(TarefaNaoEncontradaException ex) {
+        Map<String, String> erro = new HashMap<>();
+        erro.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
+
+    @ExceptionHandler(RegraNegocioException.class)
+    public ResponseEntity<Map<String, String>> tratarRegraNegocio(RegraNegocioException ex) {
+        Map<String, String> erro = new HashMap<>();
+        erro.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
     }
 }

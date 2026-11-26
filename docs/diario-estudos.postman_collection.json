@@ -1,0 +1,529 @@
+{
+    "info": {
+        "name": "Diario de Estudos",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Sucesso",
+            "item": [
+                {
+                    "name": "Cadastrar tarefa",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 201\", function () {",
+                                    "    pm.response.to.have.status(201);",
+                                    "});",
+                                    "pm.collectionVariables.set(\"tarefaId\", pm.response.json().id);",
+                                    "pm.test(\"Status PENDENTE\", function () {",
+                                    "    pm.expect(pm.response.json().status).to.eql(\"PENDENTE\");",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"Estudar Spring Boot\",\n    \"materia\": \"Programação Web\",\n    \"dataEntrega\": \"2026-12-20\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Listar tarefas",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Buscar tarefa por id",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "{{tarefaId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Atualizar tarefa",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "pm.test(\"Prioridade ALTA\", function () {",
+                                    "    pm.expect(pm.response.json().prioridade).to.eql(\"ALTA\");",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "{{tarefaId}}"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"Estudar Spring Boot e JPA\",\n    \"materia\": \"Programação Web\",\n    \"dataEntrega\": \"2026-11-27\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Concluir tarefa",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "pm.test(\"Status CONCLUIDA\", function () {",
+                                    "    pm.expect(pm.response.json().status).to.eql(\"CONCLUIDA\");",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}/concluir",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "{{tarefaId}}",
+                                "concluir"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Falha",
+            "item": [
+                {
+                    "name": "Cadastrar sem titulo (400)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 400\", function () {",
+                                    "    pm.response.to.have.status(400);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"\",\n    \"materia\": \"Banco de Dados\",\n    \"dataEntrega\": \"2026-12-01\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Cadastrar sem data (400)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 400\", function () {",
+                                    "    pm.response.to.have.status(400);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"Lista de SQL\",\n    \"materia\": \"Banco de Dados\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Cadastrar com status invalido (400)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 400\", function () {",
+                                    "    pm.response.to.have.status(400);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"Lista de SQL\",\n    \"materia\": \"Banco de Dados\",\n    \"dataEntrega\": \"2026-12-01\",\n    \"status\": \"FEITA\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Concluir tarefa ja concluida (409)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 409\", function () {",
+                                    "    pm.response.to.have.status(409);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}/concluir",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "{{tarefaId}}",
+                                "concluir"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Buscar tarefa inexistente (404)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/9999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "9999"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Atualizar tarefa inexistente (404)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/9999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "9999"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"titulo\": \"Estudar Spring Boot\",\n    \"materia\": \"Programação Web\",\n    \"dataEntrega\": \"2026-12-20\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Concluir tarefa inexistente (404)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/9999/concluir",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "9999",
+                                "concluir"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Excluir tarefa inexistente (404)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", function () {",
+                                    "    pm.response.to.have.status(404);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/9999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "9999"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Exclusao",
+            "item": [
+                {
+                    "name": "Excluir tarefa",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 204\", function () {",
+                                    "    pm.response.to.have.status(204);",
+                                    "});"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tarefas",
+                                "{{tarefaId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8080"
+        },
+        {
+            "key": "tarefaId",
+            "value": "1"
+        }
+    ]
+}
